@@ -2,8 +2,22 @@ import numpy as np
 import streamlit as st
 from PIL import Image
 from ClassOCR import ReadTextFromImage
-from matplotlib import pyplot as plt
+import mysql.connector 
 
+def initializeConnection():
+    return mysql.connector.connect(**st.secrets["mysql"])
+conn=initializeConnection()
+@st.experimental_memo(ttl=600)
+def runQuery(query):
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchall()
+rows=runQuery(f"SELECT p.nom,p.postnom,p.prenom,p.adresse,v.designation,v.matricule FROM avoirvoiture a",
+"INNER JOIN proprietaire p on p.codeProp=a.codeProprio",
+"INNER JOIN voiture v on v.codeVoiture=a.codeVoiture where v.matricule='{resultat}'")
+
+for row in rows:
+    st.write(f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]} {row[5]} {row[6]}")
 
 
 # main app
