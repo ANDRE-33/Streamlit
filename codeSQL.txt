@@ -1,0 +1,3 @@
+SELECT p.nom,p.postnom,p.prenom,p.adresse,v.designation,v.matricule FROM avoirvoiture a 
+INNER JOIN proprietaire p on p.codeProp=a.codeProprio
+INNER JOIN voiture v on v.codeVoiture=a.codeVoiture
